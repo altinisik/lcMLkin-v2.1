@@ -6,15 +6,15 @@ lcMLkin is a powerful tool to estimate kinship coefficient on
 low-coverage genome data. [Current release](https://github.com/kveeramah/lcMLkin_v2) has been implemented on
 Python2. Here, I slightly polished the script and implemented it for
 Python3. Now, one can use it with both PL or GL according to your called
-vcf. The most important difference between v1 (Lipatov *et al.* 2015) and v2 (Žegarac *et al.* 2021) of lcMLkin is the genotyping pipeline. In v1, the authors provided a genotyping scripts, however this is extremely slow. In v2, one can easily calculate their own genotype likelihoods. Below, a standard pipeline using `bcftools` has been provided.
+vcf. The most important difference between v1 (Lipatov *et al.* 2015) and v2 (Žegarac *et al.* 2021) of lcMLkin is the genotyping pipeline. In [v1](https://github.com/COMBINE-lab/maximum-likelihood-relatedness-estimation), the authors provided a genotyping script, however this is extremely slow. In [v2](https://github.com/kveeramah/lcMLkin_v2), one can easily calculate their own genotype likelihoods. Below, a standard pipeline using `bcftools` has been provided.
 
-## Running lcMLkin
+## Running lcMLkin v2.1
 
 It is a simple python script. You need a vcf file (zipped or not) and plink files to be calculate AFs (or pre-calculated allele frequencies). In this version, lcMLkin does LD-pruning for each pair. That's why binary plink files are needed to run the script. Other flags are optional. See help output below. 
 
 #### On frequencies
 
-See the original papers for a detailed explanation. To accurately calculate kinship coefficients on low-coverage data, background allele frequencies are important. For ancient DNA data or for a couple of individuals, generally it is not possible to calculate highly accurate allele frequency of population. Providing background allele frequencies is a work-around to solve this problem. You can use either present-day high-coverage populations or pooled ancient populations (see Altınışık *et al.* 2022 for a possible approach). These populations should not deviate a lot from the population that you analyze (Žegarac *et al.* 2021). In plink files that was provided to `lcmlkinv2.py`, you should have only individuals that you intend to use for allele frequency calculation.
+See the original papers for a detailed explanation. To accurately calculate kinship coefficients on low-coverage data, background allele frequencies are important. For ancient DNA data or for a couple of individuals, generally it is not possible to calculate highly accurate allele frequency of the population. Providing background allele frequencies is a work-around to solve this problem. You can use either present-day high-coverage populations or pooled ancient populations (see Altınışık *et al.* 2022 for a possible approach). These populations should not deviate a lot from the population that you analyse (Žegarac *et al.* 2021). In plink files that was provided to `lcmlkinv2.py`, you should have only individuals that you intend to use for allele frequency calculation.
 
 ```bash
 python lcmlkinv2.py -h
@@ -84,14 +84,14 @@ $bcftools query -f'%CHROM\t%POS\t%REF,%ALT\n' ${out}.vcf.gz | bgzip -c > ${out}.
 tabix -s1 -b2 -e2 ${out}.tsv.gz
 ```
 
-5. Call selected SNPs from your own data. Since lcMLkin uses info from low-quality SNPs, quality thresholds are low but you can use your own parameters. 
+5. Calculate genotype likelihoods of selected SNPs in your own data. Since lcMLkin uses info from low-quality SNPs (see [this](https://github.com/COMBINE-lab/maximum-likelihood-relatedness-estimation/wiki/Best-Practices)), it is better to use low quality thresholds, but you can use your own parameters. Be careful not use these less confident genotype likelihoods in other analyses. 
 
 ```bash
 $bcftools mpileup -f ${reffa} -B -q20 -Q5 -I -a 'FORMAT/DP' -T {out}.vcf.gz -b bam.list -Ou | \
 $bcftools call -Am -C alleles -f GP,GQ -T {out}.tsv.gz -Oz -o mydata.vcf.gz &
 ```
 
-6. Run lcMLkin
+6. Run lcMLkin v2.1
 
 ```bash
 python lcmlkinv2.py -v mydata.vcf.gz -p PlinkPrefix 
@@ -107,7 +107,7 @@ python lcmlkinv2.py -v mydata.vcf.gz -p PlinkPrefix
 ## Citation
 
 If you use this script, please cite original papers. 
-The first version was published in Lipatov *et al.* 2015: https://doi.org/10.1101/023374
-The second version was published in Žegarac *et al.* 2021: https://doi.org/10.1038/s41598-021-89090-x
+- The first version was published in Lipatov *et al.* 2015: https://doi.org/10.1101/023374
+- The second version was published in Žegarac *et al.* 2021: https://doi.org/10.1038/s41598-021-89090-x
 
 The SNP list ascertained to Yoruba population used in Altınışık *et al.* 2022 will be openly available soon. You can drop an e-mail for it. 
