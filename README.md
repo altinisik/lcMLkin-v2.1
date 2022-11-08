@@ -14,7 +14,7 @@ It is a simple python script. You need a vcf file (zipped or not) and plink file
 
 #### On frequencies
 
-See the original papers for a detailed explanation. To accurately calculate kinship coefficients on low-coverage data, background allele frequencies are important. For ancient DNA data or for a couple of individuals, generally it is not possible to calculate highly accurate allele frequency of the population. Providing background allele frequencies is a work-around to solve this problem. You can use either present-day high-coverage populations or pooled ancient populations (see Altınışık *et al.* 2022 for a possible approach). These populations should not deviate a lot from the population that you analyse (Žegarac *et al.* 2021). In plink files that was provided to `lcmlkinv2.py`, you should have only individuals that you intend to use for allele frequency calculation.
+See the original papers for a detailed explanation. To accurately calculate kinship coefficients on low-coverage data, background allele frequencies are important. For ancient DNA data or for a couple of individuals, generally it is not possible to calculate highly accurate allele frequency of the population. Providing background allele frequencies is a work-around to solve this problem. You can use either present-day high-coverage populations or pooled ancient populations (see [Altınışık *et al.* 2022](https://www.science.org/doi/10.1126/sciadv.abo3609) for a possible approach). These populations should not deviate a lot from the population that you analyse (Žegarac *et al.* 2021). In plink files that was provided to `lcmlkinv2.py`, you should have only individuals that you intend to use for allele frequency calculation.
 
 ```bash
 python lcmlkinv2.py -h
@@ -110,4 +110,4 @@ If you use this script, please cite original papers.
 - The first version was published in Lipatov *et al.* 2015: https://doi.org/10.1101/023374
 - The second version was published in Žegarac *et al.* 2021: https://doi.org/10.1038/s41598-021-89090-x
 
-The SNP list ascertained to Yoruba population used in Altınışık *et al.* 2022 will be openly available soon. You can drop an e-mail for it. 
+The SNP list ascertained to Yoruba population used in [Altınışık *et al.* 2022](https://www.science.org/doi/10.1126/sciadv.abo3609) is openly available [here](https://zenodo.org/record/7305608). Please see the paper for a detailed description of SNP list preparation procedure.
