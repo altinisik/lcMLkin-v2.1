@@ -114,7 +114,7 @@ print('Reading data...', flush=True)
 x=file.readlines()
 for line in x:
     if line[0]=='#':
-        head=line[:-1].split('\t')[9:]
+        head=line[:-1].split()[9:]
         unrel_ind=[]
         for g in range(len(head)):
             unrel_ind.append(g)
